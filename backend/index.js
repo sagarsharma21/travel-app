@@ -19,8 +19,8 @@ console.log("MongoDB connected!")
     console.log(err);
 });
 
-
-//pinroute
+ 
+//use endpoints
 app.use("/api/pins", pinRoute);
 app.use("/api/users", userRoute);
 

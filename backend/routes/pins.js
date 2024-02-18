@@ -1,15 +1,14 @@
 const router = require("express").Router();
 
-
 const Pin = require("../models/Pin");
 
 //create a Pin
-router.post("/", async (req, res) => {
+router.post("/create", async (req, res) => {
     const newPin = new Pin(req.body);
     
     try{
          const savedPin = await newPin.save();
-         res.send(200).json(savedPin);
+         res.sendStatus(200).json(savedPin);
     } catch(err) {
         res.status(500).json(err);
     }
@@ -18,10 +17,11 @@ router.post("/", async (req, res) => {
 
 //get all Pins
 router.get("/", async (req, res) => {
-    const pins = await Pin.find();
-    
+
     try{
-        res.send(200).json(pins);
+        const pins = await Pin.find();
+        res.sendStatus(200).json(pins);
+        
     }catch(err) {
         res.status(500).json(err);
     }

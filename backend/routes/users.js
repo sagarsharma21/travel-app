@@ -12,16 +12,37 @@ router.post("/register", async (req,res)=>{
 
         //create new user  
         const newUser = new User({
-                username:req.body.username,
-                email:req.body.email,
-                password:hash,
-        }); //storing in db
+                username: req.body.username,
+                email: req.body.email,
+                password: hash,
+        }); //creating obj of User type and storing in db
 
         //save user and send response
         const user = await newUser.save();
         res.status(200).json(user._id);
 
     }catch(err){
+        res.status(500).json(err);
+    }
+});
+
+//login
+router.post("/login", async (req,res)=>{
+    try{
+        //find user
+        const user = await User.findOne({ username: req.body.username });
+        !user && res.status(400).json("Wrong username or password");
+
+        //validate password
+        const validpassword = await bcrypt.compare(
+            req.body.password,
+            user.password
+            );
+        !validpassword && res.status(400).json("Wrong username or password");
+
+        //send success
+        res.status(200).json({ _id: user._id, username: username});
+    } catch(err){
         res.status(500).json(err);
     }
 });
